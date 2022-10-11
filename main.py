@@ -1,130 +1,143 @@
 import turtle
 
+class userInterface():
+    def __init__(self):
+        self.text = "  JOGUE"
+        self.player1 = turtle.Turtle()
+        self.player2 = turtle.Turtle()
+        self.innitializePlayers()
+        self.menu = turtle.Turtle()
+        self.innitializeMenu()
+        self.info = turtle.Turtle()
+        self.innitializeInfo()
+        self.actionSelector = turtle.Turtle()
+        self.innitializeActionSelector()
+        self.hp = turtle.Turtle()
+        self.life = turtle.Turtle()
+        self.hp2 = turtle.Turtle()
+        self.life2 = turtle.Turtle()
+        self.innitializeLifeBars()
+        self.mainLoopWindow()
 
-player1 = turtle.Turtle()
-player2 = turtle.Turtle()
-menu = turtle.Turtle()
-info = turtle.Turtle()
-action = turtle.Turtle()
-hp = turtle.Turtle()
-life = turtle.Turtle()
-hp2 = turtle.Turtle()
-life2 = turtle.Turtle()
+        self.action_id = 1
+        self.action_name = "Ataque Leve"
 
-text = "  JOGUE"
+    def mainLoopWindow(self):
+        self.screen = turtle.Screen()
+        self.screen.setup(width=1040,height=570)
+        self.screen.bgpic("assets/field.gif")
 
-screen = turtle.Screen()
-screen.setup(width=1040,height=570)
-screen.bgpic("assets/field.gif")
+        self.screen.onkeypress(self.move_to_soft_attack, 'Left')
+        self.screen.onkeypress(self.move_to_soft_attack, 'Up')
+        self.screen.onkeypress(self.move_to_healing, 'Right')
+        self.screen.onkeypress(self.move_to_hard_attack, 'Down')
+        self.screen.onkeypress(self.confirm, 'space')
 
+        self.screen.listen()
 
-menu_asset = 'assets/menu.gif'
-hp_asset = 'assets/hp.gif'
-gabumon = 'assets/gabumon.gif'
-agumon = 'assets/agumon.gif'
-turtle.register_shape(gabumon)
-turtle.register_shape(agumon)
-turtle.register_shape(menu_asset)
-turtle.register_shape(hp_asset)
+        self.screen.mainloop()
 
+    def innitializeLifeBars(self):
+        hp_asset = 'assets/hp.gif'
+        turtle.register_shape(hp_asset)
 
+        self.life.penup()
+        self.life.speed(0)
+        self.life.goto(-360,50)
+        self.life.speed(6)
+        self.life.pendown()
+        self.life.color("red")
+        self.life.width(20)
+        self.life.forward(220)
+        self.life.hideturtle()
+        self.life.color("black")
 
-player1.shape(agumon)
-player1.penup()
-player1.speed(0)
-player1.goto(-270,-150)
-player1.speed(1)
-player1.left(30)
-
-
-
-player2.shape(gabumon)
-player2.penup()
-player2.speed(0)
-player2.goto(250,80)
-player2.speed(1)
-
-
-menu.shape(menu_asset)
-menu.penup()
-menu.speed(0)
-menu.goto(210,-230)
-menu.speed(6)
-
-
-life.penup()
-life.speed(0)
-life.goto(-360,50)
-life.speed(6)
-life.pendown()
-life.color("red")
-life.width(20)
-life.forward(220)
-life.hideturtle()
-life.color("black")
-
-hp.shape(hp_asset)
-hp.penup()
-hp.speed(0)
-hp.goto(-270,50)
-hp.speed(6)
+        self.hp.shape(hp_asset)
+        self.hp.penup()
+        self.hp.speed(0)
+        self.hp.goto(-270,50)
+        self.hp.speed(6)
 
 
-life2.penup()
-life2.speed(0)
-life2.goto(160,250)
-life2.speed(6)
-life2.pendown()
-life2.color("red")
-life2.width(20)
-life2.forward(220)
-life2.hideturtle()
-life2.color("black")
+        self.life2.penup()
+        self.life2.speed(0)
+        self.life2.goto(160,250)
+        self.life2.speed(6)
+        self.life2.pendown()
+        self.life2.color("red")
+        self.life2.width(20)
+        self.life2.forward(220)
+        self.life2.hideturtle()
+        self.life2.color("black")
 
-hp2.shape(hp_asset)
-hp2.penup()
-hp2.speed(0)
-hp2.goto(250,250)
-hp2.speed(6)
+        self.hp2.shape(hp_asset)
+        self.hp2.penup()
+        self.hp2.speed(0)
+        self.hp2.goto(250,250)
+        self.hp2.speed(6)
 
+    def innitializePlayers(self):
+        agumon = 'assets/agumon.gif'
+        turtle.register_shape(agumon)
+        self.player1.shape(agumon)
+        self.player1.penup()
+        self.player1.speed(0)
+        self.player1.goto(-270, -150)
+        self.player1.speed(1)
+        self.player1.left(30)
 
+        gabumon = 'assets/gabumon.gif'
+        turtle.register_shape(gabumon)
+        self.player2.shape(gabumon)
+        self.player2.penup()
+        self.player2.speed(0)
+        self.player2.goto(250,80)
+        self.player2.speed(1)
 
+    def innitializeMenu(self):
+        menu_asset = 'assets/menu.gif'
+        turtle.register_shape(menu_asset)
+        self.menu.shape(menu_asset)
+        self.menu.penup()
+        self.menu.speed(0)
+        self.menu.goto(210,-230)
+        self.menu.speed(6)
 
-info.hideturtle()
-info.penup()
-info.speed(0)
-info.goto(10,-245)
-info.color('white')
-info.write(text,font=('Arial', 18, 'bold'))
+    def innitializeInfo(self):
+        self.info.hideturtle()
+        self.info.penup()
+        self.info.speed(0)
+        self.info.goto(10,-245)
+        self.info.color('white')
+        self.info.write(self.text,font=('Arial', 18, 'bold'))
 
-action.penup()
-action.speed(0)
-action.goto(250,-211)
+    def innitializeActionSelector(self):
+        self.actionSelector.penup()
+        self.actionSelector.speed(0)
+        self.actionSelector.goto(250,-211)
 
-def move_to_soft_attack():
-    action.goto(250,-211)
+    def move_to_soft_attack(self):
+        self.actionSelector.goto(250,-211)
+        self.action_id = 1
+        self.action_name = "Ataque Leve"
 
-def move_to_hard_attack():
-    action.goto(250,-249)
+    def move_to_hard_attack(self):
+        self.actionSelector.goto(250,-249)
+        self.action_id = 2
+        self.action_name = "Ataque Pesado"
 
-def move_to_healing():
-    action.goto(390,-211)
+    def move_to_healing(self):
+        self.actionSelector.goto(390,-211)
+        self.action_id = 3
+        self.action_name = "Regenerar"
 
-def confirm():
-    player1.forward(30)
-    player1.backward(30)
-    info.clear()
-    text = "AGUARDE"
-    info.write(text,font=('Arial', 18, 'bold'))
+    def confirm(self):
+        self.player1.forward(30)
+        self.player1.backward(30)
+        self.info.clear()
+        self.text = "Usou "
+        self.info.write((self.text + self.action_name),font=('Arial', 18, 'bold'))
     
         
-screen.onkeypress(move_to_soft_attack, 'Left')
-screen.onkeypress(move_to_soft_attack, 'Up')
-screen.onkeypress(move_to_healing, 'Right')
-screen.onkeypress(move_to_hard_attack, 'Down')
-screen.onkeypress(confirm, 'space')
-
-screen.listen()
-
-screen.mainloop()
+userInterface()
 
